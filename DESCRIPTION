@@ -1,7 +1,7 @@
 Package: leaf13C
 Title: a global dataset of leaf D13C data
-Version: 0.2.1
-Date: 2017-04-25
+Version: 0.2.2
+Date: 2025-04-18
 Description: These are data from bulk leaf D13C data collected on many different species from across the world.
 Depends:
     R (>= 3.1.0)
