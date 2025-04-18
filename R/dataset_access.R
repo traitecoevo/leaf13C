@@ -25,9 +25,30 @@
 ##' #
 ##' #
 
-get_data <- function(version=NULL, path=NULL) {
-  dataset_get(version, path)
+get_data <- function(version = NULL, path = NULL) {
+  # Resolve path using rappdirs logic
+  resolved_path <- if (is.null(path)) {
+    rappdirs::user_data_dir("leaf13C")  # "leaf13C" is your dataset name
+  } else {
+    path
+  }
+  
+  # Resolve version
+  resolved_version <- if (is.null(version)) {
+    dataset_version_current(local = TRUE, path = resolved_path)
+  } else {
+    version
+  }
+  
+  # Print the resolved values
+  cat("Using version:", resolved_version, "\n")
+  cat("Path:", resolved_path, "\n")
+  
+  # Get the dataset
+  dataset_get(version = resolved_version, path = resolved_path)
 }
+
+
 
 ## This one is the important part; it defines the three core bits of
 ## information we need;
@@ -52,13 +73,13 @@ dataset_get <- function(version=NULL, path=NULL) {
 ##'   \code{local=TRUE}.  For \code{mydata_version_current}, if
 ##'   \code{TRUE}, but there are no local versions, then we do check
 ##'   for the most recent github version.
-dataset_versions <- function(local=TRUE, path=NULL) {
+dataset_versions <- function(local=FALSE, path=NULL) {
   datastorr::github_release_versions(dataset_info(path), local)
 }
 
 ##' @export
 ##' @rdname get_data
-dataset_version_current <- function(local=TRUE, path=NULL) {
+dataset_version_current <- function(local=FALSE, path=NULL) {
   datastorr::github_release_version_current(dataset_info(path), local)
 }
 
