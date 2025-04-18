@@ -44,7 +44,7 @@ get_data <- function(version = NULL, path = NULL) {
   }
   
   cat("Using version:", resolved_version, "\n")
-  cat("Path:", resolved_path, "\n")
+  cat("Local path to data:", resolved_path, "\n")
   
   datastorr::github_release_get(dataset_info(resolved_path), resolved_version)
 }
