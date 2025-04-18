@@ -1,65 +1,70 @@
-
-##' This function provides access to the versioned dataset
+##' Retrieve a versioned copy of the leaf13C dataset
 ##'
+##' This function provides access to a versioned dataset hosted on GitHub
+##' using the \pkg{datastorr} framework. It will download and cache the dataset
+##' if not already available locally, and return it as a data frame.
 ##'
-##' @title get_data
+##' If no version is specified, the most recent available version will be used.
+##' If no path is specified, a suitable persistent directory will be chosen
+##' automatically using \code{rappdirs::user_data_dir()}.
 ##'
-##' @param version Version number.  The default will load the most
-##'   recent version on your computer or the most recent version known
-##'   to the package if you have never downloaded the data before.
-##'   With \code{plant_lookup_del}, specifying \code{version=NULL}
-##'   will delete \emph{all} data sets.
+##' @title Get leaf13C dataset
 ##'
-##' @param path Path to store the data at.  If not given,
-##'   \code{datastorr} will use \code{rappdirs} to find the best place
-##'   to put persistent application data on your system.  You can
-##'   delete the persistent data at any time by running
-##'   \code{mydata_del(NULL)} (or \code{mydata_del(NULL, path)} if you
-##'   use a different path).
+##' @param version Optional character string specifying the dataset version to retrieve.
+##'   If \code{NULL} (default), the most recent available version will be used.
+##'
+##' @param path Optional file path to store and access the dataset locally.
+##'   If \code{NULL} (default), a system-appropriate location will be used,
+##'   determined via \code{rappdirs::user_data_dir("leaf13C")}.
+##'
+##' @return A data frame containing the leaf13C dataset.
 ##'
 ##' @export
+##'
 ##' @examples
-##' #
-##' # see the format of the resource
-##' #
-##' #
-##' #
-
+##' # Load the most recent version of the dataset
+##' data <- get_data()
+##'
+##' # Load a specific version of the dataset
+##' data <- get_data(version = "0.1.0")
+##'
+##' # Use a custom path
+##' data <- get_data(path = "~/my_data")
 get_data <- function(version = NULL, path = NULL) {
-  # Resolve path using rappdirs logic
   resolved_path <- if (is.null(path)) {
-    rappdirs::user_data_dir("leaf13C")  # "leaf13C" is your dataset name
+    rappdirs::user_data_dir("leaf13C")
   } else {
     path
   }
   
-  # Resolve version
   resolved_version <- if (is.null(version)) {
-    dataset_version_current(local = TRUE, path = resolved_path)
+    datastorr::github_release_version_current(dataset_info(resolved_path), local = TRUE)
   } else {
     version
   }
   
-  # Print the resolved values
   cat("Using version:", resolved_version, "\n")
   cat("Path:", resolved_path, "\n")
   
-  # Get the dataset
-  dataset_get(version = resolved_version, path = resolved_path)
+  datastorr::github_release_get(dataset_info(resolved_path), resolved_version)
 }
 
 
-
-## This one is the important part; it defines the three core bits of
-## information we need;
-##   1. the repository name (traitecoevo/taxonlookup)
-##   2. the file to download (plant_lookup.csv)
-##   3. the function to read the file, given a filename (read_csv)
+##' Internal dataset metadata used by datastorr
+##'
+##' This function defines metadata needed by datastorr, including repository,
+##' filename, and the function to read the file.
+##'
+##' @param path Local path to store/retrieve the dataset.
+##'
+##' @return A datastorr dataset info object.
+##' @keywords internal
+##' @export
 dataset_info <- function(path) {
   datastorr::github_release_info("wcornwell/leaf_13C",
-                                 filename="leaf13C.csv",
-                                 read=read_csv,
-                                 path=path)
+                                 filename = "leaf13C.csv",
+                                 read = read_csv,
+                                 path = path)
 }
 
 dataset_get <- function(version=NULL, path=NULL) {

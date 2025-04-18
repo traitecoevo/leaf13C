@@ -7,12 +7,11 @@ Depends:
     R (>= 3.1.0)
 License: MIT + file LICENSE
 LazyData: true
+Encoding: UTF-8
 Author: Will Cornwell
 Maintainer: Will Cornwell <wcornwell@gmail.com>
 Imports:
     dplyr,
     rappdirs,
     datastorr (>= 0.0.3)
-Suggests:
-    testthat
-RoxygenNote: 5.0.1
+RoxygenNote: 7.3.2
