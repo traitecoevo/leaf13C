@@ -40,13 +40,13 @@ local_data <- leaf13C::get_data()
 ```
 
     ## Using version: 0.2.0 
-    ## Path: ~/Library/Application Support/leaf13C
+    ## Local path to data: ~/Library/Application Support/leaf13C
 
 This should download the most recent version of the database on to your
 computer and load it into R.
 
 Meta-data for these columns are
-(here)\[<https://github.com/traitecoevo/leaf13C/blob/master/leaf13C_metadata.txt>\].
+[here](https://github.com/traitecoevo/leaf13C/blob/master/leaf13C_metadata.txt).
 
 As the database moves forward the version number will change, but access
 to older versions will be possible through either this R package, the
