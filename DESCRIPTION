@@ -1,6 +1,6 @@
 Package: leaf13C
 Title: a global dataset of leaf D13C data
-Version: 0.1.0
+Version: 0.2.1
 Date: 2017-04-25
 Description: These are data from bulk leaf D13C data collected on many different species from across the world.
 Depends:
@@ -11,6 +11,7 @@ Author: Will Cornwell
 Maintainer: Will Cornwell <wcornwell@gmail.com>
 Imports:
     dplyr,
+    rappdirs,
     datastorr (>= 0.0.3)
 Suggests:
     testthat
